@@ -1,13 +1,13 @@
+
+<h4 align="center">Gabumon Recon</h4>
+
 <h1 align="center">
   <br>
-  <img width="300" height="300" src="https://i.pinimg.com/originals/83/02/26/83022659706f6a47826c222d0d665082.jpg">
+  <img width="100" height="100" src="https://i.pinimg.com/originals/83/02/26/83022659706f6a47826c222d0d665082.jpg">
   <br>
   Gabumon Recon
   <br>
 </h1>
-
-<h4 align="center">Gabumon Recon</h4>
-
 
 
 ### Important Notice
