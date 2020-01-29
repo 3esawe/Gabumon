@@ -3,7 +3,7 @@
 
 <h1 align="center">
   <br>
-  <img width="100" height="100" src="https://i.pinimg.com/originals/83/02/26/83022659706f6a47826c222d0d665082.jpg">
+  <img width="150" height="150" src="https://i.pinimg.com/originals/83/02/26/83022659706f6a47826c222d0d665082.jpg">
   <br>
   Gabumon Recon
   <br>
