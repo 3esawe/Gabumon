@@ -1,4 +1,8 @@
+def isLink(url):
 
+	if "http://" not in url and "https://" not in url:
+		return False
+	return True
 
 
 def parseFileToList(inFile):

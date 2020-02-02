@@ -14,22 +14,33 @@ img_src = []
 keywrods = ['a', 'img', 'script']  
 
 
-def source(url):
+def source(url, out=None):
 	if "http://" not in url and "https://" not in url:
 		print("[+] You forgot to enter http:// or https://")
 	req = requests.get(url)
-	return req.text
+	
+	if out == None:
+		srcAnlayzer(req.text)
+		jsLinks(req.text)
 
+	else: 
+		srcAnlayzer(req.text, out)
+		jsLinks(req.text, out)
 
-def jsLinks(inputFile):
+def jsLinks(source_code, out = None):
 
 	links = []
-	matches = re.findall(r'http[s]?://(?:[a-zA-Z]|[0-9]|[$-_@.&+]|[!*\(\), ]|(?:%[0-9a-fA-F][0-9a-fA-F]))+', inputFile)
+	matches = re.findall(r'http[s]?://(?:[a-zA-Z]|[0-9]|[$-_@.&+]|[!*\(\), ]|(?:%[0-9a-fA-F][0-9a-fA-F]))+', source_code)
 	for match in matches:
-		writeFile(match, 'ScriptLinks')
+		
+		if out == None:
+			print(match)
+		
+		else:
+			writeFile(match, out)
 
 
-def srcAnlayzer(source_code):
+def srcAnlayzer(source_code, out = None):
 	
 	soap =	BeautifulSoup(source_code,features="lxml")
 	for key in keywrods:
@@ -50,6 +61,11 @@ def srcAnlayzer(source_code):
 			tag = soap.img
 			if tag != None:
 				img_src.append([s['src'] for s in soap.find_all('img', {'src':True})])
+	if out != None:
+		with open(out ,'w') as handle:
+			handle.write(['%s ********************href links********************\n' % i for i in links])
+			handle.write(['\n%s ********************script links********************\n' % i for i in script_links])
+			handle.write(['\n%s ********************img links********************\n' % i for i in img_src])
 
 
 
