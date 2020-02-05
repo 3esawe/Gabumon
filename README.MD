@@ -20,7 +20,7 @@ This Mode will do DNS enumration for the target and dump the result to a file
 ##### HTML Mode
 This Mode will scan the provided file and extracts all js files from it and other useful links
 ##### Directory Brute-Forcing
-Under Development
+Added Directory Brute-Forcing but still under development 
 
 ### Important Notice
 Gabumon is a tool that will help you to automate some Bug Bounty tasks
