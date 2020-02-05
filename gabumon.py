@@ -1,5 +1,6 @@
 from freq import *
 
+from main.bruteForce import bruteForce
 from main.subdomainfinder import subdomainsfinder
 from main.HTMLscanner import source
 from freq.utils import isLink
@@ -67,25 +68,34 @@ if MODE == 'DNS':
 	
 	else:
 		subdomainsfinder(domain)
-else: 
+elif MODE == 'URL':
 	
 	url = parser['url']
-	print(url)
+	# print(url)
 	
 	if isLink(url) and parser['javascript'] == None:
 
-		source_code = requests.get(url).text
+
 		outputFile = ''
 
 		if parser['outputFile'] != None:
 			outputFile = parser['outputFile']
-			source(source_code, outputFile)
+			source(url, outputFile)
 		else:
-			source(source_code)
+			source(url)
 	
-	elif isLink(url) and parser['js'] != None:
-		
-		source_code = requests.get(url).text
-		jsLinks(source_code)
+	elif isLink(url) and parser['javascript'] != None:
+
+		jsLinks(url)
+
+else:
+	url = parser['url']
+	
+	if parser['inputFile']:
+		bruteForce(url, parser['inputFile'])
+	
+	else:
+		print('here')
+		bruteForce(url)
 
 
