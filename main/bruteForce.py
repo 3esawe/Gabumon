@@ -3,20 +3,31 @@ import concurrent.futures
 from freq.utils import parseFileToList
 
 
+statusCodes = []
+
+def statusCodes(status):
+	global statusCodes
+	statusCodes = [int(i) for i in status.split(',')]
+
 def bruteForceScanner(url, word):
 	
-	print(word)
-	surl = url+word
+	surl = url+'/'+word+ext
 
-	response = requests.get(surl)
+	if statusCodes != None:
+		response = requests.get(surl)
+		if response.status_code in statusCodes:
+			print ("[+] found:- {}     {}".format(surl, response.status_code))
+		
 
-	if (response.status_code == 200):
-		print ("[+] found :- ",surl)
-		write(word)
-	
-	else:	
-		print ("[-] Not found :- ",surl)
-		pass
+	else:
+		response = requests.get(surl)
+
+		if response.status_code == 200:
+			print ("[+] found :- ",surl)
+
+		else:	
+			print ("[-] Not found :- ",surl)
+			pass
 
 
 

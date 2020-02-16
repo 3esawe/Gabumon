@@ -1,6 +1,6 @@
 from freq import *
 
-from main.bruteForce import bruteForce
+from main.bruteForce import bruteForce, statusCodes
 from main.subdomainfinder import subdomainsfinder
 from main.HTMLscanner import source
 from freq.utils import isLink
@@ -18,7 +18,7 @@ arparser = argparse.ArgumentParser()
 
 
 arparser.add_argument(
-"-m", "--mode", required=True, help="Enter the usage mode DNS\n for DNS enumaration\nHTML for HTML scanning (i.e.) python3 gabumon [mode]"
+"-m", "--mode", required=True, help="Enter the usage mode DNS\n for DNS enumaration\nHTML for HTML scanning \nDIR for Directory Brute-Forcing\n(i.e.)python3 gabumon [mode]"
 )
 
 arparser.add_argument(
@@ -26,7 +26,7 @@ arparser.add_argument(
 )
 
 arparser.add_argument(
-"-u", "--url", required=False, help="Url to scan in [URL] mode"
+"-u", "--url", required=False, help="Url to scan in [URL, DIR] mode"
 )
 
 arparser.add_argument(
@@ -44,8 +44,9 @@ arparser.add_argument(
 
 
 arparser.add_argument(
-"-t", "--threads", required=False, help="Enter the number of threads in [DNS] mode"
+"-s", "--status", required=False, help="Enter HTTP response codes you want to see "
 )
+
 
 
 parser = vars(arparser.parse_args())
@@ -90,12 +91,16 @@ elif MODE == 'URL':
 
 else:
 	url = parser['url']
-	
+	status = parser['status']
+	if status:
+		statusCodes(status)
+
 	if parser['inputFile']:
 		bruteForce(url, parser['inputFile'])
 	
 	else:
-		print('here')
+
 		bruteForce(url)
+
 
 

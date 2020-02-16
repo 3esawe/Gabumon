@@ -7,53 +7,92 @@ author Omar Bani-Issa
 
 import requests
 import json 
-from freq.utils import *
+# from freq.utils import *
 from multiprocessing.dummy import Pool as ThreadPool
+import pycurl
+from io import BytesIO
+from urllib.parse import urlencode
 
 
 
 
-def parseJson(response, out=None):
-	
+def crtsh(sub):
+	# print(sub)
+	crtsh = []
+	r = requests.session()
+	certsh = "https://crt.sh"
+	data = {"q":"%.{}.{}".format(sub, domain), "output":"json"}
+	response = r.post(url = certsh, data= data)
+	# print(response.text)
 	try:			
 		json_data = json.loads(response)
-		subdomains = set()
-		# print(json_data)
-		# print('s')
+
 		for i in range(len(json_data)):
 			if out != None:
 				writeFile(json_data[i]['name_value'], out)
 			else:
-				subdomains.add(json_data[i]['name_value'].lstrip('\n').rstrip(' ').lstrip(' '))
-		return subdomains
-	except:
+				crtsh.add(json_data[i]['name_value'].lstrip('\n').rstrip(' ').lstrip(' '))
+	except:		
 		pass
 
+	return crtsh
+# ?domain=line.me&include_subdomains=true&expand=dns_names&expand=issuer&expand=cert"
+def certspotter(sub):
+	certspotter = []
 
+	buffer = BytesIO()
+	c = pycurl.Curl()
+	c.setopt(c.URL, 'https://api.certspotter.com/v1/issuances?domain={}.line.me&include_subdomains=true&expand=dns_names&expand=issuer&expand=cert'.format(sub))
+	c.setopt(c.WRITEDATA, buffer)
+	c.perform()
+	c.close()
 
+	body = buffer.getvalue()
+	# Body is a byte string.
+	# We have to know the encoding in order to print it to a text file
+	# such as standard output.
+	# output = json.loads()
+	try:			
+		json_data = json.loads((body.decode('iso-8859-1')))
+		for i in range(len(json_data)):
+			print(json_data[i]['dns_names'].lstrip('\n').rstrip(' ').lstrip(' '))
+	except:		
+		pass
 
-def subdomainsfinder(domain, threadNum=5, inputFile='/root/Gabumon/main/subdomains-top1million-5000.txt'):
+#  https://api.hackertarget.com/hostsearch/?q=line.me
 
-	subdomains = []
+def hackertarget(sub):
+	hackertarget = []
 
-	def sendRequest(sub):
-		# print(sub)
-		r = requests.session()
-		certsh = "https://crt.sh"
-		data = {"q":"%.{}.{}".format(sub, domain), "output":"json"}
-		response = r.post(url = certsh, data= data)
-		# print(response.text)
-		ret = parseJson(response.text)
+	buffer = BytesIO()
+	c = pycurl.Curl()
+	c.setopt(c.URL, 'https://api.hackertarget.com/hostsearch/?q={}.line.me'.format(sub))
+	c.setopt(c.WRITEDATA, buffer)
+	c.perform()
+	c.close()
+
+	body = buffer.getvalue()
+	# Body is a byte string.
+	# We have to know the encoding in order to print it to a text file
+	# such as standard output.
+	# output = json.loads()
+	for i in range(len(body.decode('iso-8859-1').split(','))):
 		
 		try:
-			subdomains.extend(list(ret))
+			if len(body.decode('iso-8859-1').split(',')[i].split('\n')) > 1:
+
+				hackertarget.append(body.decode('iso-8859-1').split(',')[i].split('\n')[1])
+			else:
+				hackertarget.append(body.decode('iso-8859-1').split(',')[i])
 		
-		except:
+		except:			
 			pass
+	
+	print(hackertarget)
 
-	inputFile = parseFileToList(inputFile)
-	pool = ThreadPool(int(threadNum))
-	results = pool.map(sendRequest, inputFile)
-	print(subdomains)
+def subdomainsfinder(domain, inputFile='/root/Gabumon/main/subdomains-top1million-5000.txt'):
+	pass
 
 
+hackertarget('game')
+certspotter('game')
