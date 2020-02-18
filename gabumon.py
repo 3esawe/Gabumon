@@ -59,16 +59,17 @@ if MODE == 'DNS':
 
 	domain = parser['domain']
 	inputFile = parser['inputFile']
-	threads = parser['threads']
 
-	if inputFile != None and threads != None:
+
+	if inputFile != None:
 		subdomainsfinder(domain, threads, inputFile)
 
-	elif inputFile == None and threads != None:
-		subdomainsfinder(domain, threads)
-	
+
 	else:
-		subdomainsfinder(domain)
+		res = subdomainsfinder(domain)
+		for i in res:
+			print(i)
+
 elif MODE == 'URL':
 	
 	url = parser['url']
