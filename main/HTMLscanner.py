@@ -22,12 +22,13 @@ def source(url, out=None, js =False):
 
 	if out == None:
 		srcAnlayzer(req.text)
-	
+		Links(req.text)
 	else:	
 		srcAnlayzer(req.text, out)
+		Links(req.text, out)
 
 
-def jsLinks(source_code, out = None):
+def Links(source_code, out = None):
 
 	links = []
 	matches = re.findall(r'http[s]?://(?:[a-zA-Z]|[0-9]|[$-_@.&+]|[!*\(\), ]|(?:%[0-9a-fA-F][0-9a-fA-F]))+', source_code)
@@ -45,22 +46,25 @@ def srcAnlayzer(source_code, out = None):
 	soap =	BeautifulSoup(source_code,features="lxml")
 	for key in keywrods:
 
-		if key == 'a':
+		if key == 'a' and soap.a != None:
 			tag = soap.a
 			links.append([a['href'] for a in soap.find_all('a', {"href":True})])
 		
-		if key == 'script' :
+		elif key == 'script' and soap.script != None :
 			
 			tag = soap.script
 			content = soap.script.string
 			script_links.append([s['src'] for s in soap.find_all('script', {'src':True})])
 		
 
-		if key == 'img':
+		elif key == 'img':
 			
 			tag = soap.img
 			if tag != None:
 				img_src.append([s['src'] for s in soap.find_all('img', {'src':True})])
+
+		else:
+			exit("No URL has been found")
 
 	if out != None:
 		
@@ -88,6 +92,19 @@ def srcAnlayzer(source_code, out = None):
 				handle.write('\n%s\n' % img_src[0][i])
 
 
+	else:
+
+			for i in range(len(links[0])):
+				
+				print('%s' % links[0][i])
+			
+			for i in range(len(script_links[0])):
+	
+				print('%s' % script_links[0][i])
+
+			for i in range(len(img_src[0])):
+
+				print('%s' % img_src[0][i])
 
 
 

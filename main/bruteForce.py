@@ -3,26 +3,30 @@ import concurrent.futures
 from freq.utils import parseFileToList
 
 
-statusCodes = []
+statusC = []
 
 def statusCodes(status):
-	global statusCodes
-	statusCodes = [int(i) for i in status.split(',')]
+
+	global statusC
+	statusC = [int(i) for i in status.split(',')]
 
 def bruteForceScanner(url, word):
-	
-	surl = url+'/'+word+ext
 
-	if statusCodes != None:
+	surl = url + '/' + word
+
+	if len(statusC) > 0:
+		
 		response = requests.get(surl)
-		if response.status_code in statusCodes:
-			print ("[+] found:- {}     {}".format(surl, response.status_code))
+		if response.status_code in statusCCodes:
+			print ("[+] found:- {}     {}".format(surl, response.statusC_code))
 		
 
 	else:
+		
 		response = requests.get(surl)
-
+		
 		if response.status_code == 200:
+			
 			print ("[+] found :- ",surl)
 
 		else:	
@@ -44,11 +48,3 @@ def bruteForce(url ,wordlist = '/root/Gabumon/main/subdomains-top1million-5000.t
 		pass
 
 
-
-# for i in range(2000):
-# 	word = fo.readline(10).strip()
-
-# 	#print (surl)
-	
-
-# 	#print (response)

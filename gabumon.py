@@ -30,11 +30,6 @@ arparser.add_argument(
 )
 
 arparser.add_argument(
-"-js", "--javascript", required=False, help="javascript file to parse url from in [URL] mode"
-)
-
-
-arparser.add_argument(
 "-o", "--outputFile", required=False, help="Enter the name of the output file"
 )
 
@@ -73,26 +68,20 @@ if MODE == 'DNS':
 elif MODE == 'URL':
 	
 	url = parser['url']
-	# print(url)
 	
-	if isLink(url) and parser['javascript'] == None:
+	outputFile = ''
 
-
-		outputFile = ''
-
-		if parser['outputFile'] != None:
-			outputFile = parser['outputFile']
-			source(url, outputFile)
-		else:
-			source(url)
-	
-	elif isLink(url) and parser['javascript'] != None:
-
-		jsLinks(url)
+	if parser['outputFile'] != None:
+		outputFile = parser['outputFile']
+		source(url, outputFile)
+	else:
+		source(url)
 
 else:
+
 	url = parser['url']
 	status = parser['status']
+	
 	if status:
 		statusCodes(status)
 
@@ -100,7 +89,7 @@ else:
 		bruteForce(url, parser['inputFile'])
 	
 	else:
-
+		
 		bruteForce(url)
 
 

@@ -10,8 +10,7 @@ import json
 import pycurl
 from io import BytesIO
 from urllib.parse import urlencode
-import concurrent.futures
-# from freq.utils import parseFileToList
+
 
 
 
@@ -39,15 +38,16 @@ def crtsh(domain):
 		pass
 	# print(crtsh)
 	return crtsh
-# ?domain=line.me&include_subdomains=true&expand=dns_names&expand=issuer&expand=cert"
-def certspotter(sub):
-	certspotter = []
+# https://www.threatcrowd.org/searchApi/v2/domain/report/?domain=line.me
+# To do but is not that useful
+def threatcrowd(sub):
+	threatcrowd = []
 
 	buffer = BytesIO()
 	c = pycurl.Curl()
-	c.setopt(c.URL, 'https://api.certspotter.com/v1/issuances?domain={}.line.me&include_subdomains=true&expand=dns_names&expand=issuer&expand=cert'.format(sub))
+	c.setopt(c.URL, 'https://www.threatcrowd.org/searchApi/v2/domain/report/?domain={}'.format(sub))
 	c.setopt(c.WRITEDATA, buffer)
-	c.perform()
+	c.perform()	
 	c.close()
 
 	body = buffer.getvalue()
@@ -55,12 +55,13 @@ def certspotter(sub):
 	# We have to know the encoding in order to print it to a text file
 	# such as standard output.
 	# output = json.loads()
-	try:			
-		json_data = json.loads((body.decode('iso-8859-1')))
-		for i in range(len(json_data)):
-			print(json_data[i]['dns_names'].lstrip('\n').rstrip(' ').lstrip(' '))
-	except:		
-		pass
+	output = json.loads(body)
+	
+	for i in output['subdomains']:
+		threatcrowd.append(i)
+
+	return threatcrowd
+
 
 
 #  https://api.hackertarget.com/hostsearch/?q=line.me
@@ -70,16 +71,13 @@ def hackertarget(sub):
 	buffer = BytesIO()
 	c = pycurl.Curl()
 	# print('https://api.hackertarget.com/hostsearch/?q={}.line.me'.format(sub))
-	c.setopt(c.URL, 'https://api.hackertarget.com/hostsearch/?q={}.line.me'.format(sub))
+	c.setopt(c.URL, 'https://api.hackertarget.com/hostsearch/?q={}'.format(sub))
 	c.setopt(c.WRITEDATA, buffer)
 	c.perform()
 	c.close()
 
 	body = buffer.getvalue()
-	# Body is a byte string.
-	# We have to know the encoding in order to print it to a text file
-	# such as standard output.
-	# output = json.loads()
+
 	for i in range(len(body.decode('iso-8859-1').split(','))):
 		
 		try:
@@ -99,11 +97,14 @@ def subdomainsfinder(domain):
 	subdomains = []
 	_crtsh = []
 	_hackertarget = []
-
+	_threatcrowd = []
+	
 	_crtsh = crtsh(domain)
 	_hackertarget = hackertarget(domain)
-
-	subdomains = _crtsh + _hackertarget
+	_threatcrowd = threatcrowd(domain)
+	
+	subdomains = _crtsh + _hackertarget + _threatcrowd
 
 	return list(set(subdomains))
-# print(crtsh('line.me', 'game'))
+
+threatcrowd('line.me')
