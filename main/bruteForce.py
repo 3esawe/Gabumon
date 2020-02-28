@@ -35,7 +35,7 @@ def bruteForceScanner(url, word):
 
 
 
-def bruteForce(url ,wordlist = '/root/Gabumon/main/subdomains-top1million-5000.txt'):
+def bruteForce(url ,wordlist ):
 
 	#Schedules the callable, fn, to be executed as fn(*args **kwargs) and returns a Future object representing the execution of the callable.
 	threadpool = concurrent.futures.ThreadPoolExecutor( 

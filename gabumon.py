@@ -34,7 +34,7 @@ arparser.add_argument(
 )
 
 arparser.add_argument(
-"-i", "--inputFile", required=False, help="Enter the name of the input file to get the subdomains from"
+"-i", "--inputFile", required=False, help="Enter the path to the wordlist [DIR] mode"
 )
 
 

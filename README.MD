@@ -12,7 +12,7 @@
 
 ### Important Notice
 Gabumon is a tool that will help you to automate some Bug Bounty tasks
-**Usage:** `python3 gabumon.py -m DNS -d [DNS] -o [OUTFILE]` OR `python3 gabumon.py -m HTML -u [URL]`
+**Usage:** `python3 gabumon.py -m DNS -d [DNS] -o [OUTFILE]` OR `python3 gabumon.py -m HTML -u [URL]` `python3 gabumon.py -m DIR -u [URL] -i /path/to/wordlist`
 
 ### Description
 ##### DNS Mode
