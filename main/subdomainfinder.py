@@ -92,6 +92,8 @@ def hackertarget(sub):
 	
 	return hackertarget
 
+
+
 def subdomainsfinder(domain):
 	
 	subdomains = []

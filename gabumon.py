@@ -18,7 +18,7 @@ arparser = argparse.ArgumentParser()
 
 
 arparser.add_argument(
-"-m", "--mode", required=True, help="Enter the usage mode DNS\n for DNS enumaration\nHTML for HTML scanning \nDIR for Directory Brute-Forcing\n(i.e.)python3 gabumon [mode]"
+"-m", "--mode", required=True, help="Enter the usage mode DNS\n for DNS enumaration\nURL for HTML scanning \nDIR for Directory Brute-Forcing\n(i.e.)python3 gabumon [mode]"
 )
 
 arparser.add_argument(
@@ -49,7 +49,11 @@ parser = vars(arparser.parse_args())
 MODE = parser['mode']
 
 
+if MODE not in ['DNS', 'URL', 'URL']:
+	arparser.print_help()
+	exit()
 
+	
 if MODE == 'DNS':
 
 	domain = parser['domain']
